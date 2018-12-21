@@ -1279,7 +1279,7 @@ abline(a=0,b=0, lwd=1, lty=1)
 
 
 axis(1,at=seq(0,1,1),
-     labels=c("Richness\n","Diversity\nindex"),
+     labels=c("Richness\n","Taxonomic\ndiversity index"),
      cex.axis=0.7,tck=-0.02)
 
 axis(2,
