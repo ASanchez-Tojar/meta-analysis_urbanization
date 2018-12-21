@@ -453,7 +453,7 @@ newdat <- data.frame(N.final=meta.final$N.final,
 newdat <- newdat[order(newdat$N.final),]
 
 
-tiff("plots/Figure_S7_Eggers_regression.tiff",
+tiff("plots/Figure_S5_Eggers_regression.tiff",
      height=10.5, width=10.5,
      units='cm', compression="lzw", res=800)
 
@@ -560,7 +560,7 @@ newdat <- data.frame(Year=meta.final$Year,
 newdat <- newdat[order(newdat$Year),]
 
 
-tiff("plots/Figure_S8_Time_lag_bias.tiff",
+tiff("plots/Figure_S6_Time_lag_bias.tiff",
      height=10.5, width=10.5,
      units='cm', compression="lzw", res=800)
 
