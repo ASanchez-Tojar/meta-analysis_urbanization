@@ -182,7 +182,7 @@ meta <- meta[!(meta$studyID%in%exclude.for.time.being),]
 
 meta$es_type <- as.character(meta$es_type)
 
-meta[meta$studyID=="Ordeñana et al 2010","es_type"] <- "spearmans"
+meta[meta$studyID=="Orde?ana et al 2010","es_type"] <- "spearmans"
 meta[meta$studyID=="Potapova et al 2005","es_type"] <- "kendalls"
 meta[meta$studyID=="Kinzig et al 2005" | 
        meta$studyID=="Slawski et al 2008" | 
@@ -686,7 +686,7 @@ newdat <- newdat[c(2,3,1,21),]
 #############
 # Actual plot
 
-tiff("plots/Figure_2_metaregression_method.tiff",
+tiff("plots/Figure_3_metaregression_method.tiff",
      height=10.5, width=10.5,
      units='cm', compression="lzw", res=600)
 
@@ -837,7 +837,7 @@ newdat <- newdat[c(1,5,10),]
 #############
 # Actual plot
 
-tiff("plots/Figure_5_metaregression_taxa.tiff",
+tiff("plots/Figure_6_metaregression_taxa.tiff",
      height=10.5, width=10.5,
      units='cm', compression="lzw", res=600)
 
@@ -978,7 +978,7 @@ newdat <- newdat[c(1,7,11),]
 #############
 # Actual plot
 
-tiff("plots/Figure_3_metaregression_continent.tiff",
+tiff("plots/Figure_4_metaregression_continent.tiff",
      height=10.5, width=10.5,
      units='cm', compression="lzw", res=600)
 
@@ -1118,7 +1118,7 @@ newdat <- newdat[c(1,3,6),]
 #############
 # Actual plot
 
-tiff("plots/Figure_6_metaregression_scale.tiff",
+tiff("plots/Figure_7_metaregression_scale.tiff",
      height=10.5, width=10.5,
      units='cm', compression="lzw", res=600)
 
@@ -1258,7 +1258,7 @@ newdat <- newdat[c(1,10),]
 #############
 # Actual plot
 
-tiff("plots/Figure_4_metaregression_index.tiff",
+tiff("plots/Figure_5_metaregression_index.tiff",
      height=10.5, width=10.5,
      units='cm', compression="lzw", res=600)
 
