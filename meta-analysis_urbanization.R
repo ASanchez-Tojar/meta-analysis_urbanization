@@ -423,8 +423,6 @@ round(I2.upper,0)
 
 # since Vr includes r itself (see equation above), Vr and r are correlated, which means 
 # that we should not use Vr for the Egger's regression, and instead we are gonna use N
-# meta.final$Precision<-sqrt(1/meta.final$Vr)
-# meta.final$zresid<-resid*meta.final$Precision
 
 eggers.model <- rma.mv(r, Vr, mods = ~ N.final, random = ~ 1 | studyID/obsID, data=meta.final)
 print(eggers.model, digits=3)
@@ -433,7 +431,7 @@ confint(model)
 # For each meta-regression, one should estimate pseudo R^2 to know how much heterogeneity is explained.
 # For that we follow the code from: https://stat.ethz.ch/pipermail/r-sig-meta-analysis/2017-September/000232.html
 # This way of estimating R2 is not very precise, therefore sometimes R2 is negative. In those case, we set R2
-# to 0%, and intepret it like that
+# to 0%, and interpret it like that
 (sum(model$sigma2) - sum(eggers.model$sigma2)) / sum(model$sigma2)
 
 # this indicates that there is some evidence for publication bias but it is not too strong
@@ -1279,7 +1277,7 @@ abline(a=0,b=0, lwd=1, lty=1)
 
 
 axis(1,at=seq(0,1,1),
-     labels=c("Richness\n","Taxonomic\ndiversity index"),
+     labels=c("Richness\n","Others\n"),
      cex.axis=0.7,tck=-0.02)
 
 axis(2,
