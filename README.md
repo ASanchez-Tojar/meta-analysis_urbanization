@@ -8,6 +8,8 @@ For any further information, please contact: [Alfredo Sánchez-Tójar](https://s
 
 ## Scripts:
 
-`meta-analysis_urbanization.R`: 
+`meta-analysis_urbanization.R`: script to run the actual multilevel meta-analyses and meta-regressions to test the relationship between urbanization and biodiversity, and the importance of the methodology used to estimate such relationship. The analyses are run using the R package '[metafor](http://www.metafor-project.org/doku.php/metafor)'. In addition, it contains code for testing publication and time-lag bias, and for generating plots.
 
 ### Notes:
+
+29th March 2019: The script available now will likely be split in two: processing data script and analytical script.
