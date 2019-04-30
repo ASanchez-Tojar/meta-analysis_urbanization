@@ -6,10 +6,13 @@ Endika Blanco-Urdillo, Alfredo Sánchez-Tójar, Juan D. Ibáñez-Álamo. Under r
 
 For any further information, please contact: [Alfredo Sánchez-Tójar](https://scholar.google.co.uk/citations?hl=en&user=Sh-Rjq8AAAAJ&view_op=list_works&sortby=pubdate), email: alfredo.tojar@gmail.com
 
-## Scripts:
+## Scripts and data:
 
-`meta-analysis_urbanization.R`: script to run the actual multilevel meta-analyses and meta-regressions to test the relationship between urbanization and biodiversity, and the importance of the methodology used to estimate such relationship. The analyses are run using the R package '[metafor](http://www.metafor-project.org/doku.php/metafor)'. In addition, it contains code for testing publication and time-lag bias, and for generating plots.
+`data_preparation_urbanization.R`: script to prepare data for multilevel meta-analyses and meta-regressions on the relationship between urbanization and biodiversity. The code is used to exclude studies not providing enought information to be included in the analyses, estimate effect sizes, code variables, etc. `data_preparation_urbanization.R` needs the dataset `meta_AST_v2.csv` as input, and it creates the `meta_final_reduced.csv`as output, which will be then used by the following script.
+
+`meta-analysis_urbanization.R`: script to run the actual multilevel meta-analyses and meta-regressions to test the relationship between urbanization and biodiversity, and explore the importance of the methodology used to study such relationship. The analyses are run using the R package '[metafor](http://www.metafor-project.org/doku.php/metafor)'. In addition, it contains code for testing publication and time-lag bias, and for generating plots. `meta-analysis_urbanization.R` needs the dataset `meta_final_reduced.csv` as input. 
 
 ### Notes:
 
 29th March 2019: The script available now will likely be split in two: processing data script and analytical script.
+30th March 2019: The script was split in two to increase re-usability.
