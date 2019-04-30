@@ -107,8 +107,6 @@ meta$taxa.2 <- as.factor(ifelse(meta$TAXA=="AMPHIBIANS" |
                                 "VERTEBRATES",as.character(meta$TAXA)))
 
 #table(meta$taxa.2)
-#additionally, we reorder the levels to set the reference level (intercept) to vertebrates
-meta$taxa.2 <- factor(meta$taxa.2,levels(meta$taxa.2)[c(3,1,2)])
 
 
 #since sample sizes were to small for the original idea, we have recoded the factor
@@ -119,8 +117,6 @@ meta$continent.2 <- as.factor(ifelse(meta$CONTINENT=="ASIA" |
                                      "OTHERS",as.character(meta$CONTINENT)))
 
 #table(meta$continent.2)
-#additionally, we reorder the levels to set the reference level (intercept) to North America
-meta$continent.2 <- factor(meta$continent.2,levels(meta$continent.2)[c(2,1,3)])
 
 
 #since sample sizes were to small for the original idea, we have recoded the factor
@@ -133,18 +129,12 @@ meta$scale.2 <- as.factor(ifelse(meta$SCALE=="LOCAL" |
                                  "LOCAL/REGIONAL",as.character(meta$SCALE)))
 
 #table(meta$scale.2)
-#additionally, we reorder the levels to set the reference level (intercept) to Local
-meta$scale.2 <- factor(meta$scale.2,levels(meta$scale.2)[c(3,2,1)])
 
 
 #table(meta$METHOD)
-#for method we reorder the levels to set the reference level (intercept) to Urban Gradient
-meta$METHOD <- factor(meta$METHOD,levels(meta$METHOD)[c(4,1,3,2)])
 
 
 #table(meta$index)
-#for index we reorder the levels to set the reference level (intercept) to Richness
-meta$index <- factor(meta$index,levels(meta$index)[c(2,1)])
 
 
 #some papers need to be excluded, at least for the time being until we find out if 
@@ -349,5 +339,5 @@ meta.final$obsID <- 1:nrow(meta.final)
 
 # Saving a reduced version of the final database to make double-checking easier
 write.csv(meta.final[,c("studyID","Year","r","Vr","N.final","METHOD","taxa.2",
-                        "continent.2","scale.2","obsID")],
+                        "continent.2","scale.2","index","obsID")],
           "output_final_db/meta_final_reduced.csv",row.names=FALSE)
