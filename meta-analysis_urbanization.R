@@ -12,9 +12,9 @@
 # effect of urbanization on biodiversity.
 
 # Endika Blanco-Urdillo, Alfredo Sánchez-Tójar, Juan D. 
-# Ibáñez-Álamo. Under review. Methodological approaches 
-# to study the effect of urbanization on biodiversity: a 
-# review and meta-analysis.
+# Ibáñez-Álamo. Methodological approaches to study the effect 
+# of urbanization on biodiversity: a review and meta-analysis.
+
 
 ##############################################################
 # Packages needed
@@ -40,16 +40,35 @@ rm(list=ls())
 meta.final <- read.table("output_final_db/meta_final_reduced.csv",
                          header=T, sep=",")
 
+# Customizing the order of the factor levels
+
+#additionally, we reorder the levels to set the reference level (intercept) to vertebrates
+meta.final$taxa.2 <- factor(meta.final$taxa.2,levels(meta.final$taxa.2)[c(3,1,2)])
+
+#additionally, we reorder the levels to set the reference level (intercept) to North America
+meta.final$continent.2 <- factor(meta.final$continent.2,levels(meta.final$continent.2)[c(2,1,3)])
+
+#additionally, we reorder the levels to set the reference level (intercept) to Local
+meta.final$scale.2 <- factor(meta.final$scale.2,levels(meta.final$scale.2)[c(1,3,2)])
+
+#for method we reorder the levels to set the reference level (intercept) to Urban Gradient
+meta.final$METHOD <- factor(meta.final$METHOD,levels(meta.final$METHOD)[c(4,1,3,2)])
+
+#for index we reorder the levels to set the reference level (intercept) to Richness
+meta.final$index <- factor(meta.final$index,levels(meta.final$index)[c(2,1)])
+
+
 ################
 # META-ANALYSIS
 ################
 
 # MAIN MODEL = multilevel meta-analysis
 # running the model
-model <- rma.mv(r, Vr, random = ~ 1 | studyID/obsID, data=meta.final)
+model <- rma.mv(r, Vr, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+
 
 # printing the summary results of the model
-print(model, digits=3)
+print(model, digits=2)
 
 # printing the results again, but adding the credibility/prediction interval, which
 # uses the heterogeneity to generate a 95% interval that should contain the effect
@@ -61,7 +80,7 @@ forest(model)
 
 # estimating the variances for both random effects, and their 95% CI, which we
 # use to estimate I2 (see below)
-confint(model)
+confint(model, digits=2)
 
 # we can look for potential outliers based on the residuals of the model
 # any points below -2 or above 2 could be considered outliers
@@ -122,17 +141,19 @@ round(I2.upper,0)
 # since Vr includes r itself (see equation above), Vr and r are correlated, which means 
 # that we should not use Vr for the Egger's regression, and instead we are gonna use N
 
-eggers.model <- rma.mv(r, Vr, mods = ~ N.final, random = ~ 1 | studyID/obsID, data=meta.final)
-print(eggers.model, digits=3)
+eggers.model <- rma.mv(r, Vr, mods = ~ N.final, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+print(eggers.model, digits=2)
 confint(model)
 
 # For each meta-regression, one should estimate pseudo R^2 to know how much heterogeneity is explained.
 # For that we follow the code from: https://stat.ethz.ch/pipermail/r-sig-meta-analysis/2017-September/000232.html
 # This way of estimating R2 is not very precise, therefore sometimes R2 is negative. In those case, we set R2
 # to 0%, and interpret it like that
-(sum(model$sigma2) - sum(eggers.model$sigma2)) / sum(model$sigma2)
+((sum(model$sigma2) - sum(eggers.model$sigma2)) / sum(model$sigma2))*100
 
 # this indicates that there is some evidence for publication bias but it is not too strong
+
+confint(eggers.model, digits=2)
 
 #########
 # PLOT
@@ -209,15 +230,15 @@ dev.off()
 # more in: https://besjournals.onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2010.00012.x
 meta.final$Year.z <- scale(meta.final$Year)
 
-timelag <- rma.mv(r, Vr, mods = ~ Year.z, random = ~ 1 | studyID/obsID, data=meta.final)
-print(timelag, digits=3)
-confint(timelag)
+timelag <- rma.mv(r, Vr, mods = ~ Year.z, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+print(timelag, digits=2)
+confint(timelag,digits=2)
 
 # For each meta-regression, one should estimate pseudo R^2 to know how much heterogeneity is explained.
 # For that we follow the code from: https://stat.ethz.ch/pipermail/r-sig-meta-analysis/2017-September/000232.html
 # This way of estimating R2 is not very precise, therefore sometimes R2 is negative. In those case, we set R2
 # to 0%, and intepret it like that
-(sum(model$sigma2) - sum(timelag$sigma2)) / sum(model$sigma2)
+((sum(model$sigma2) - sum(timelag$sigma2)) / sum(model$sigma2))*100
 
 # we can look for potential outliers based on the residuals of the model
 # any points below -2 or above 2 could be considered outliers
@@ -329,14 +350,14 @@ dev.off()
 #########
 
 #Second one, to test if the method influence the effect size
-metareg.method <- rma.mv(r, Vr, mods = ~ METHOD, random = ~ 1 | studyID/obsID, data=meta.final)
-print(metareg.method, digits=3)
+metareg.method <- rma.mv(r, Vr, mods = ~ METHOD, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+print(metareg.method, digits=2)
 table(meta.final$METHOD)
-confint(metareg.method)
+confint(metareg.method,digits=2)
 
 #for each meta-regression, one should estimate the R2marginal. It seems that one can do it
 #in metafor with the following code from: https://stat.ethz.ch/pipermail/r-sig-meta-analysis/2017-September/000232.html
-(sum(model$sigma2) - sum(metareg.method$sigma2)) / sum(model$sigma2)
+((sum(model$sigma2) - sum(metareg.method$sigma2)) / sum(model$sigma2))*100
 
 
 # we can look for potential outliers based on the residuals of the model
@@ -376,7 +397,7 @@ newdat <- data.frame(method=meta.final$METHOD,
 # as one can see fit upper and lower are the same for all the values
 # correspoding to a specific level of the factor, that, we reduce
 # the database to have only four rows.
-newdat <- newdat[c(2,3,1,21),]
+newdat <- newdat[c(2,3,1,22),]
 
 
 #############
@@ -474,9 +495,9 @@ dev.off()
 #################
 
 #third one, to test if the taxa influence the effect size
-metareg.taxa <- rma.mv(r, Vr, mods = ~ taxa.2, random = ~ 1 | studyID/obsID, data=meta.final)
-print(metareg.taxa, digits=3)
-confint(metareg.taxa)
+metareg.taxa <- rma.mv(r, Vr, mods = ~ taxa.2, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+print(metareg.taxa, digits=2)
+confint(metareg.taxa,digits=2)
 table(meta.final$taxa.2)
 
 
@@ -614,9 +635,9 @@ dev.off()
 #################
 
 #fourth one, to test if the continent influence the effect size
-metareg.continent <- rma.mv(r, Vr, mods = ~ continent.2, random = ~ 1 | studyID/obsID, data=meta.final)
-print(metareg.continent, digits=3)
-confint(metareg.continent)
+metareg.continent <- rma.mv(r, Vr, mods = ~ continent.2, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+print(metareg.continent, digits=2)
+confint(metareg.continent,digits=2)
 table(meta.final$continent.2)
 
 
@@ -756,9 +777,9 @@ dev.off()
 #################
 
 #fifth one, to test if the scale influence the effect size
-metareg.scale <- rma.mv(r, Vr, mods = ~ scale.2, random = ~ 1 | studyID/obsID, data=meta.final)
-print(metareg.scale, digits=3)
-confint(metareg.scale)
+metareg.scale <- rma.mv(r, Vr, mods = ~ scale.2, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+print(metareg.scale, digits=2)
+confint(metareg.scale,digits=2)
 table(meta.final$scale.2)
 
 #for each meta-regression, one should estimate the R2marginal. It seems that one can do it
@@ -896,9 +917,9 @@ dev.off()
 #################
 
 #fifth one, to test if the scale influence the effect size
-metareg.index <- rma.mv(r, Vr, mods = ~ index, random = ~ 1 | studyID/obsID, data=meta.final)
-print(metareg.index, digits=3)
-confint(metareg.index)
+metareg.index <- rma.mv(r, Vr, mods = ~ index, random = list(~ 1 | studyID, ~ 1 | obsID), data=meta.final)
+print(metareg.index, digits=2)
+confint(metareg.index,digits=2)
 table(meta.final$index)
 
 #for each meta-regression, one should estimate the R2marginal. It seems that one can do it
